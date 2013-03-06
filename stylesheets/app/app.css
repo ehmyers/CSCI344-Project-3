@@ -23,7 +23,6 @@ a {
 
 .tabs {
   margin-top: 50px;
-  margin-bottom: 20px;
 }
 
 .tabs .tab {
@@ -36,4 +35,8 @@ a {
   background: white;
   border: 1px solid #aaaaaa;
   border-bottom-width: 0;
+}
+
+#title_and_category {
+  padding-left: 30px;
 }
