@@ -31,7 +31,7 @@ var fillCategory = function (category_name) {
             // checks if the item's category matches the current category
             if (category === category_name) {
                 // adds the item to the current paragraph
-                $("<p><i class='icon-remove'></i>" + todo.description + "</p>").appendTo("#" + category_name);
+                $("<p><a href='#'><i class='icon-remove'></i></a>" + todo.description + "</p>").appendTo("#" + category_name);
                 console.log(todo.description);
             }
         });
@@ -43,8 +43,10 @@ var addAllToMainList = function () {
     "use strict";
     var list_item;
     todos.forEach(function (todo) {
-        // adds the remove button to the paragraph, also assigns id name
-        list_item = "<p id='title_and_category'><i class='icon-remove'></i>";
+        // adds a paragraph
+        list_item = "<p id='title_and_category'>";
+        // adds the remove button to the paragraph
+        list_item += "<a href='#'><i class='icon-remove'></i></a>";
         // adds each description to the string
         list_item += todo.description + "<span id='categories'>";
         // adds each category to the string
@@ -108,9 +110,17 @@ var recalculateForCategoryTab = function () {
     categoryNames.sort();
 };
 
+// removes item when user clicks remove button
+var removeItem = function () {
+    "use strict";
+    $("icon-remove").click(function () {
+        console.log("click!")
+    });
+};
+
+// runs all the functions
 var main = function () {
     "use strict";
-    // runs all the functions
     createTabs();
     // gets the JSON file.  critical.
     $.getJSON("all.json", function (json_todos) {
