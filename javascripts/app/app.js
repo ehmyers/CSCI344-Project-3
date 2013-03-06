@@ -65,14 +65,24 @@ var addAllToMainList = function () {
 var addUnseenCategoryToArray = function (categoryNames, category) {
     // check to see if the current category is in the array
     // -1 means it is not in the array, and it adds to the array
+    console.log(category);
     "use strict";
     if (categoryNames.indexOf(category) === -1) {
         categoryNames.push(category);
     }
+    return categoryNames;
 };
 
-var populateCategoryNames = function () {
+var populateCategoryNames = function (categoryNames) {
     "use strict";
+    todos.forEach(function (todo) {
+        todo.categories.forEach(function (category) {
+            // addUnseenCategoryToArray updates categoryNames array
+            categoryNames = addUnseenCategoryToArray(categoryNames, category);
+            console.log(categoryNames);
+        })
+    });
+    return categoryNames;
 };
 
 // recalculate to do list for categorized tab
@@ -80,7 +90,7 @@ var recalculateForCategoryTab = function () {
     "use strict";
     // (will be added to by addUnseenCategoryToArray)
     var categoryNames = [];
-    populateCategoryNames();
+    populateCategoryNames(categoryNames);
     // on click, check the tab's href
     $(".tabs > .tab").click(function () {
         var target = $(this).attr("href");
