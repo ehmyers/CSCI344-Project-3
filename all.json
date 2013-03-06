@@ -1,0 +1,47 @@
+[
+  {
+    "description":"buy coffee",
+    "categories":[
+      "shopping",
+      "groceries"
+    ]
+  },
+
+  {
+    "description":"reserve hotel for denver trip",
+    "categories":[
+      "travel",
+      "work"
+    ]
+  },
+  
+  {
+    "description":"get plane ticket for denver trip",
+    "categories":[
+      "travel",
+      "work"
+    ]
+  },
+  
+  {
+    "description":"take dog to vet",
+    "categories":[
+      "home",
+      "family"
+    ]
+  },
+  
+  {
+    "description": "launch million dollar startup idea (todo app)",
+    "categories":[
+      "work"
+    ]
+  },
+  
+  {
+    "description": "grade web programming quizzes",
+    "categories":[
+      "work"
+    ]
+  }
+]
