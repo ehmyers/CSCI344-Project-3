@@ -5,19 +5,21 @@ var $ = window.$,
 
 // adds usability to the tabs
 var createTabs = function () {
-  $(".tabs > .tab").click(function () {
-      var target = $(this).attr("href");
-      // add/removes active class from tab
-      $(".active").removeClass("active");
-      $(this).addClass("active");
-      $("#" + target).addClass("active");
-      
-      return false;
-  });
-}
+    "use strict";
+    $(".tabs > .tab").click(function () {
+        var target = $(this).attr("href");
+        // add/removes active class from tab
+        $(".active").removeClass("active");
+        $(this).addClass("active");
+        $("#" + target).addClass("active");
+        //
+        return false;
+    });
+};
 
 // fills the categories with the items in them
 var fillCategory = function (category_name) {
+    "use strict";
     // adds a div with the id of the category name
     $("<div class='category' id='" + category_name + "'></div>").appendTo("#categorized");
     // empties the category so there isn't double-click overlap
@@ -36,10 +38,11 @@ var fillCategory = function (category_name) {
             }
         });
     });
-}
+};
 
 // adds each item/category to the all list
 var addAllToMainList = function () {
+    "use strict";
     var list_item;
     todos.forEach(function (todo) {
         // adds each description to the string
@@ -55,24 +58,44 @@ var addAllToMainList = function () {
         list_item += "</span></p>";
         // finally adds string to the div
         $(list_item).appendTo("#all-items");
-    });  
-}
+    });
+};
+
+// determines if the category has been used before
+var addUnseenCategoryToArray = function (categoryNames, category) {
+    // check to see if the current category is in the array
+    // -1 means it is not in the array, and it adds to the array
+    "use strict";
+    if (categoryNames.indexOf(category) === -1) {
+        categoryNames.push(category);
+    }
+};
+
+var populateCategoryNames = function () {
+    "use strict";
+};
 
 // recalculate to do list for categorized tab
 var recalculateForCategoryTab = function () {
-    var categoryNames = ["shopping", "work", "home"];
+    "use strict";
+    // (will be added to by addUnseenCategoryToArray)
+    var categoryNames = [];
+    populateCategoryNames();
+    // on click, check the tab's href
     $(".tabs > .tab").click(function () {
         var target = $(this).attr("href");
         //console.log("you clicked tab " + target);
         if (target === "categorized") {
+            // add all the items for each item in the array
             categoryNames.forEach(function (category) {
                 fillCategory(category);
             });
         }
     });
-}
+};
 
 var main = function () {
+    "use strict";
     // runs all the functions
     createTabs();
     // gets the JSON file.  critical.
@@ -86,6 +109,6 @@ var main = function () {
     //     return element.trim(); // <-- removes all the spaces!!
     //     categories = $("input_box").split(",");
     // });
-}
+};
 
 $(document).ready(main);
