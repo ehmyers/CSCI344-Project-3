@@ -21,7 +21,9 @@ var main = function () {
     // prints all out, along with categories
     $.getJSON("all.json", function (todos) {
         todos.forEach(function (todo) {
+            // adds each description to the string
             list_item = "<p id='title_and_category'>" + todo.description + "<span id='categories'>";
+            // adds each category to the string
             todo.categories.forEach(function (category) {
                 list_item += category;
                 // only adds comma if it's the last category
@@ -30,8 +32,18 @@ var main = function () {
                 }
             });
             list_item += "</span></p>";
+            // finally adds string to the div
             $(list_item).appendTo("#all-items");
         });  
+    });
+
+    // recalculates to do list for categorized tab
+    $(".tabs > .tab").click(function () {
+        var target = $(this).attr("href");
+        console.log("you clicked tab " + target);
+        if (target === "categorized") {
+            console.log("wooooooo");
+        }
     });
 
     // $(user_input).split(",").map(function (element) {
