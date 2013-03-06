@@ -37,6 +37,6 @@ a {
   border-bottom-width: 0;
 }
 
-#title_and_category {
+#title_and_category, #categorized {
   padding-left: 30px;
 }

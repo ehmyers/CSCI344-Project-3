@@ -35,15 +35,24 @@ var main = function () {
             // finally adds string to the div
             $(list_item).appendTo("#all-items");
         });  
-    });
 
-    // recalculates to do list for categorized tab
-    $(".tabs > .tab").click(function () {
-        var target = $(this).attr("href");
-        console.log("you clicked tab " + target);
-        if (target === "categorized") {
-            console.log("wooooooo");
-        }
+        // recalculates to do list for categorized tab
+        $(".tabs > .tab").click(function () {
+            var target = $(this).attr("href");
+            //console.log("you clicked tab " + target);
+            if (target === "categorized") {
+                $("#shopping").empty(); // make this categorized later.
+                todos.forEach(function (todo) {
+                    todo.categories.forEach(function (category) {
+                        if (category === "shopping") {
+                            $("<p>" + todo.description + "</p>").appendTo("#shopping");
+                            console.log(todo.description);
+                        }
+                    });
+
+                });
+            }
+        });
     });
 
     // $(user_input).split(",").map(function (element) {
