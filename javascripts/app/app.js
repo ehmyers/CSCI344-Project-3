@@ -21,8 +21,11 @@ var main = function () {
     // prints all out, along with categories
     $.getJSON("all.json", function (todos) {
 
+        // fills the categories with the items in them
         var fillCategory = function (category_name) {
+            $("<div class='category' id='" + category_name + "'></div>").appendTo("#categorized");
             $("#" + category_name).empty(); // make this categorized later.
+            $("<h2>" + category_name + "</h2>").appendTo("#" + category_name);
             todos.forEach(function (todo) {
                 todo.categories.forEach(function (category) {
                     if (category === category_name) {
@@ -33,6 +36,7 @@ var main = function () {
             });
         }
 
+        // adds each item/category to the all list
         todos.forEach(function (todo) {
             // adds each description to the string
             list_item = "<p id='title_and_category'>" + todo.description + "<span id='categories'>";
@@ -55,6 +59,7 @@ var main = function () {
             //console.log("you clicked tab " + target);
             if (target === "categorized") {
                 fillCategory("shopping");
+                fillCategory("work");
             }
         });
     });
