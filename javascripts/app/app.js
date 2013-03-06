@@ -5,6 +5,7 @@ var $ = window.$,
 var main = function () {
     var user_input,
     categories,
+    categoryNames = ["shopping", "groceries", "work", "home"],
     list_item;
 
     // adds usability to the tabs
@@ -58,8 +59,9 @@ var main = function () {
             var target = $(this).attr("href");
             //console.log("you clicked tab " + target);
             if (target === "categorized") {
-                fillCategory("shopping");
-                fillCategory("work");
+                categoryNames.forEach(function (category) {
+                    fillCategory(category);
+                });
             }
         });
     });
