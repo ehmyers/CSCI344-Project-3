@@ -102,6 +102,7 @@ var recalculateForCategoryTab = function () {
             });
         }
     });
+    categoryNames.sort();
 };
 
 var main = function () {
