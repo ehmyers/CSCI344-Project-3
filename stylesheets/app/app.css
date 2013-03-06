@@ -1,5 +1,6 @@
 body {
   background: #bdc3c7;
+  font-family: 'Sintony', sans-serif;
   font-size: 1.1em;
   color: #222222;
 }
@@ -31,7 +32,12 @@ a, a:hover{
   display: block;
 }
 
+h2 {
+  font-family: 'Ubuntu', sans-serif;
+}
+
 .tabs {
+  font-family: 'Ubuntu', sans-serif;
   margin-top: 70px;
   text-align: center;
 }
