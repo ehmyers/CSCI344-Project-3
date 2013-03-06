@@ -4,8 +4,8 @@ var $ = window.$,
 
 var main = function () {
     var user_input,
-        categories,
-        list_item;
+    categories,
+    list_item;
 
     // adds usability to the tabs
     $(".tabs > .tab").click(function () {
@@ -20,6 +20,19 @@ var main = function () {
 
     // prints all out, along with categories
     $.getJSON("all.json", function (todos) {
+
+        var fillCategory = function (category_name) {
+            $("#" + category_name).empty(); // make this categorized later.
+            todos.forEach(function (todo) {
+                todo.categories.forEach(function (category) {
+                    if (category === category_name) {
+                        $("<p>" + todo.description + "</p>").appendTo("#" + category_name);
+                        console.log(todo.description);
+                    }
+                });
+            });
+        }
+
         todos.forEach(function (todo) {
             // adds each description to the string
             list_item = "<p id='title_and_category'>" + todo.description + "<span id='categories'>";
@@ -41,16 +54,7 @@ var main = function () {
             var target = $(this).attr("href");
             //console.log("you clicked tab " + target);
             if (target === "categorized") {
-                $("#shopping").empty(); // make this categorized later.
-                todos.forEach(function (todo) {
-                    todo.categories.forEach(function (category) {
-                        if (category === "shopping") {
-                            $("<p>" + todo.description + "</p>").appendTo("#shopping");
-                            console.log(todo.description);
-                        }
-                    });
-
-                });
+                fillCategory("shopping");
             }
         });
     });
