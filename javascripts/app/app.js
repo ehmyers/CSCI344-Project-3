@@ -19,7 +19,7 @@ var createTabs = function () {
 
 // fills the categories with the items in them
 var fillCategory = function (category_name) {
-    "use strict";
+    "use strict"
     // adds a div with the id of the category name
     $("<div class='category' id='" + category_name + "'></div>").appendTo("#categorized");
     // empties the category so there isn't double-click overlap

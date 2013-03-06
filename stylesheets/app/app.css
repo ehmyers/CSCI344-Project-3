@@ -3,6 +3,8 @@ body {
   font-family: 'Sintony', sans-serif;
   font-size: 1.1em;
   color: #222222;
+  padding: 0px;
+  margin: 0px;
 }
 
 a, a:hover{
@@ -16,7 +18,7 @@ a, a:hover{
 }
 
 .category {
-  padding: 20px 0px;
+  padding: 10px;
 }
 
 .content {
@@ -34,6 +36,13 @@ a, a:hover{
 
 h2 {
   font-family: 'Ubuntu', sans-serif;
+  padding: 0px;
+  margin: 0px;
+}
+
+p {
+  padding: 5px 0px;
+  margin: 0px;
 }
 
 .tabs {
