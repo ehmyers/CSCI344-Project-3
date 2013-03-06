@@ -5,13 +5,13 @@ var $ = window.$,
 var main = function () {
     var user_input,
     categories,
-    categoryNames = ["shopping", "groceries", "work", "home"],
+    categoryNames = ["shopping", "work", "home"],
     list_item;
 
     // adds usability to the tabs
     $(".tabs > .tab").click(function () {
         var target = $(this).attr("href");
-        
+        // add/removes active class from tab
         $(".active").removeClass("active");
         $(this).addClass("active");
         $("#" + target).addClass("active");
@@ -20,16 +20,23 @@ var main = function () {
     });
 
     // prints all out, along with categories
-    $.getJSON("all.json", function (todos) {
+    $.getJSON("all.json", function (todos) { // gets the JSON file.  critical.
 
         // fills the categories with the items in them
         var fillCategory = function (category_name) {
+            // adds a div with the id of the category name
             $("<div class='category' id='" + category_name + "'></div>").appendTo("#categorized");
-            $("#" + category_name).empty(); // make this categorized later.
+            // empties the category so there isn't double-click overlap
+            $("#" + category_name).empty();
+            // adds a header to the category name div
             $("<h2>" + category_name + "</h2>").appendTo("#" + category_name);
+            // checks if the item being looked at has the category currently being
+            // added to, if it does, it appends it to the paragraph
             todos.forEach(function (todo) {
                 todo.categories.forEach(function (category) {
+                    // checks if the item's category matches the current category
                     if (category === category_name) {
+                        // adds the item to the current paragraph
                         $("<p>" + todo.description + "</p>").appendTo("#" + category_name);
                         console.log(todo.description);
                     }
