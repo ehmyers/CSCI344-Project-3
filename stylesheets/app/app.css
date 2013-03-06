@@ -1,15 +1,21 @@
-a {
+body {
+  background: #bdc3c7;
+  font-size: 1.1em;
+  color: #222222;
+}
+
+a, a:hover{
   text-decoration: none;
-  color: #333333;
+  color: #222222;
 }
 
 #categories {
   font-size: .75em;
-  padding-left: 10px;
+  padding-left: 15px;
 }
 
 .category {
-  padding: 10px 0px;
+  padding: 20px 0px;
 }
 
 .content {
@@ -26,21 +32,35 @@ a {
 }
 
 .tabs {
-  margin-top: 50px;
+  margin-top: 70px;
+  text-align: center;
 }
 
 .tabs .tab {
-  background: #cccccc;
+  background: #2980b9;
+  color: #ecf0f1;
   padding: 15px 40px;
   margin: 2px;
 }
 
 .tabs .active {
-  background: white;
-  border: 1px solid #aaaaaa;
+  background: #3498db;
+  border: 2px solid #2980b9;
   border-bottom-width: 0;
 }
 
 #title_and_category, #categorized {
-  padding-left: 30px;
+  padding-left: 130px;
+}
+
+/* makin' it jello! */
+.container {
+  width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  }
+  
+.inner-container {
+  width: 300px;
+  position: absolute;
 }
