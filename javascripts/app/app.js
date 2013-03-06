@@ -22,8 +22,6 @@ var fillCategory = function (category_name) {
     "use strict"
     // adds a div with the id of the category name
     $("<div class='category' id='" + category_name + "'></div>").appendTo("#categorized");
-    // empties the category so there isn't double-click overlap
-    $("#" + category_name).empty();
     // adds a header to the category name div
     $("<h2>" + category_name + "</h2>").appendTo("#" + category_name);
     // checks if the item being looked at has the category currently being
@@ -96,6 +94,8 @@ var recalculateForCategoryTab = function () {
         var target = $(this).attr("href");
         //console.log("you clicked tab " + target);
         if (target === "categorized") {
+            // empties the category so there isn't double-click overlap
+            $(".content > #categorized").empty();
             // add all the items for each item in the array
             categoryNames.forEach(function (category) {
                 fillCategory(category);
