@@ -31,7 +31,7 @@ var fillCategory = function (category_name) {
             // checks if the item's category matches the current category
             if (category === category_name) {
                 // adds the item to the current paragraph
-                $("<p>" + todo.description + "</p>").appendTo("#" + category_name);
+                $("<p><i class='icon-remove'></i>" + todo.description + "</p>").appendTo("#" + category_name);
                 console.log(todo.description);
             }
         });
@@ -43,8 +43,10 @@ var addAllToMainList = function () {
     "use strict";
     var list_item;
     todos.forEach(function (todo) {
+        // adds the remove button to the paragraph, also assigns id name
+        list_item = "<p id='title_and_category'><i class='icon-remove'></i>";
         // adds each description to the string
-        list_item = "<p id='title_and_category'>" + todo.description + "<span id='categories'>";
+        list_item += todo.description + "<span id='categories'>";
         // adds each category to the string
         todo.categories.forEach(function (category) {
             list_item += category;
@@ -73,6 +75,7 @@ var addUnseenCategoryToArray = function (categoryNames, category) {
 
 var populateCategoryNames = function (categoryNames) {
     "use strict";
+    // drills down to get each category
     todos.forEach(function (todo) {
         todo.categories.forEach(function (category) {
             // addUnseenCategoryToArray updates categoryNames array

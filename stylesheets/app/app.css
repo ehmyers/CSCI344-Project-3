@@ -23,7 +23,7 @@ a, a:hover{
 }
 
 .content .tab {
-  padding-left: 130px;
+  padding-left: 90px;
   display: none; 
 }
 
@@ -35,6 +35,10 @@ h2 {
   font-family: 'Ubuntu', sans-serif;
   padding-top: 30px;
   margin: 0px;
+}
+
+i {
+  padding: 0px 5px;
 }
 
 p {
