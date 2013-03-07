@@ -117,14 +117,18 @@ var removeItem = function () {
     var currentItem,
         currentItemIndex;
     $(".icon-remove").click(function () {
-        // gets the closest paragraph parent, removes
-        currentItem = $(this).closest("p").remove();
+        // gets the parent
+        currentItem = $(this).parent();
+        // removes the parent
+        currentItem.fadeOut(400, function () {
+            currentItem.remove();
+        });
         // gets the index of the current item
+        currentItemIndex = currentItem.attr("href");
         console.log(currentItem);
-        currentItemIndex = todos.indexOf(currentItem);
         // removes the current item
         todos.splice(currentItemIndex, 1);
-        console.log(todos);
+        // console.log(todos);
     });
 };
 
