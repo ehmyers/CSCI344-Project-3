@@ -30,9 +30,9 @@ var fillCategory = function (category_name) {
         todo.categories.forEach(function (category) {
             // checks if the item's category matches the current category
             if (category === category_name) {
-                // adds the item to the current paragraph
-                $("<p><a href='#'><i class='icon-remove'></i></a>" + todo.description + "</p>").appendTo("#" + category_name);
-                console.log(todo.description);
+                // adds the item to a paragraph
+                $("<p><i class='icon-remove'</i>" + todo.description + "</p>").appendTo("#" + category_name);
+                //console.log(todo.description);
             }
         });
     });
@@ -41,12 +41,13 @@ var fillCategory = function (category_name) {
 // adds each item/category to the all list
 var addAllToMainList = function () {
     "use strict";
-    var list_item;
+    var list_item,
+        itemIndex = 0;
     todos.forEach(function (todo) {
-        // adds a paragraph
-        list_item = "<p id='title_and_category'>";
-        // adds the remove button to the paragraph
-        list_item += "<a href='#'><i class='icon-remove'></i></a>";
+        // adds a paragraph, adds the remove button to the paragraph
+        list_item = "<p id='title_and_category' href='" + itemIndex + "'><i class='icon-remove'></i>";
+        itemIndex += 1;
+        console.log(itemIndex);
         // adds each description to the string
         list_item += todo.description + "<span id='categories'>";
         // adds each category to the string
@@ -67,7 +68,7 @@ var addAllToMainList = function () {
 var addUnseenCategoryToArray = function (categoryNames, category) {
     // check to see if the current category is in the array
     // -1 means it is not in the array, and it adds to the array
-    console.log(category);
+    // console.log(category);
     "use strict";
     if (categoryNames.indexOf(category) === -1) {
         categoryNames.push(category);
@@ -82,7 +83,7 @@ var populateCategoryNames = function (categoryNames) {
         todo.categories.forEach(function (category) {
             // addUnseenCategoryToArray updates categoryNames array
             categoryNames = addUnseenCategoryToArray(categoryNames, category);
-            console.log(categoryNames);
+            // console.log(categoryNames);
         })
     });
     return categoryNames;
@@ -113,8 +114,17 @@ var recalculateForCategoryTab = function () {
 // removes item when user clicks remove button
 var removeItem = function () {
     "use strict";
-    $("icon-remove").click(function () {
-        console.log("click!")
+    var currentItem,
+        currentItemIndex;
+    $(".icon-remove").click(function () {
+        // gets the closest paragraph parent, removes
+        currentItem = $(this).closest("p").remove();
+        // gets the index of the current item
+        console.log(currentItem);
+        currentItemIndex = todos.indexOf(currentItem);
+        // removes the current item
+        todos.splice(currentItemIndex, 1);
+        console.log(todos);
     });
 };
 
@@ -127,6 +137,7 @@ var main = function () {
         todos = json_todos;
         addAllToMainList();
         recalculateForCategoryTab();
+        removeItem();
     });
 
     // $(user_input).split(",").map(function (element) {
