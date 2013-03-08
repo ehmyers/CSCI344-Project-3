@@ -1,0 +1,8 @@
+to do list woo.
+
+make remove work
+make remove work on all tabs when clicked on one
+
+style more?  idk
+
+separate categories into separate tabs

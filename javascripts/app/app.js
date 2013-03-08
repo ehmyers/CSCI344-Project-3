@@ -1,20 +1,19 @@
 /* globals: $ */
 var $ = window.$,
     jQuery = window.jQuery,
-    todos;
+    todos
+    categoryNames = [];
 
 // adds usability to the tabs
 var createTabs = function () {
     "use strict";
-    $(".tabs > .tab").click(function () {
-        var target = $(this).attr("href");
-        // add/removes active class from tab
-        $(".active").removeClass("active");
-        $(this).addClass("active");
-        $("#" + target).addClass("active");
-        //
-        return false;
-    });
+    var target = $(this).attr("href");
+    // add/removes active class from tab
+    $(".active").removeClass("active");
+    $(this).addClass("active");
+    $("#" + target).addClass("active");
+    //
+    return false;
 };
 
 // fills the categories with the items in them
@@ -38,9 +37,11 @@ var fillCategory = function (category_name) {
 };
 
 // adds each item/category to the all list
-var addAllToMainList = function () {
+var refreshMainList = function () {
     "use strict";
     var list_item;
+    // empties the category so there isn't double-click overlap
+    $("#all-items").empty();
     todos.forEach(function (todo, itemIndex) {
         // adds a paragraph, adds the remove button to the paragraph
         list_item = "<p id='title_and_category' data-attribute='" + itemIndex + "'><i class='icon-remove'></i>";
@@ -61,7 +62,7 @@ var addAllToMainList = function () {
 };
 
 // determines if the category has been used before
-var addUnseenCategoryToArray = function (categoryNames, category) {
+var addUnseenCategoryToArray = function (category) {
     // check to see if the current category is in the array
     // -1 means it is not in the array, and it adds to the array
     // console.log(category);
@@ -72,38 +73,27 @@ var addUnseenCategoryToArray = function (categoryNames, category) {
     return categoryNames;
 };
 
-var populateCategoryNames = function (categoryNames) {
+var populateCategoryNames = function () {
     "use strict";
     // drills down to get each category
     todos.forEach(function (todo) {
         todo.categories.forEach(function (category) {
             // addUnseenCategoryToArray updates categoryNames array
-            categoryNames = addUnseenCategoryToArray(categoryNames, category);
+            categoryNames = addUnseenCategoryToArray(category);
             // console.log(categoryNames);
         });
     });
     return categoryNames;
 };
 
-// recalculate to do list for categorized tab
-var recalculateForCategoryTab = function () {
-    "use strict";
-    // (will be added to by addUnseenCategoryToArray)
-    var categoryNames = [];
-    populateCategoryNames(categoryNames);
-    // on click, check the tab's href
-    $(".tabs > .tab").click(function () {
-        var target = $(this).attr("href");
-        if (target === "categorized") {
-            // empties the category so there isn't double-click overlap
-            $(".content > #categorized").empty();
-            // add all the items for each item in the array
-            categoryNames.forEach(function (category) {
-                fillCategory(category);
-            });
-        }
+// refreshes categorized tab
+var refreshCategorizedList = function () {
+    console.log("Emptying categorized list");
+    $("#categorized").empty();
+    // add all the items for each item in the array
+    categoryNames.forEach(function (category) {
+        fillCategory(category);
     });
-    categoryNames.sort();
 };
 
 // removes item when user clicks remove button
@@ -111,53 +101,65 @@ var removeItem = function () {
     "use strict";
     var currentItem,
         currentItemIndex;
-    $(".icon-remove").click(function () {
-        // gets the parent
-        currentItem = $(this).parent();
-        // removes the parent
-        currentItem.fadeOut(400, function () {
-            currentItem.remove();
-        });
-        // gets the index of the current item
-        currentItemIndex = currentItem.attr("data-attribute");
-        // removes the current item
-        todos.splice(currentItemIndex, 1);
+    // gets the parent
+    currentItem = $(this).parent();
+    // removes the parent
+    currentItem.fadeOut(400, function () {
+        currentItem.remove();
     });
+    // gets the index of the current item
+    currentItemIndex = currentItem.attr("data-attribute");
+    // removes the current item
+    todos.splice(currentItemIndex, 1);
 };
 
 var editTab = function () {
     "use strict";
-    var target,
-        newItem = $(".user_input").val();
-    // logs the user input on click/enter
-    $(".user_input_button").click(function () {
-        console.log(newItem);
+    var newItem,
+        newItemCategories,
+        newItemObject = {},
+        categoryKnapsack = [];
+    // gets items the user submits
+    newItem = $("#user_title").val();
+    newItemCategories = $("#user_categories").val();
+    // clears out the inputs
+    $("#user_title").val("");
+    $("#user_categories").val("");
+    // splits the list into separate strings based on spaces
+    newItemCategories.split(",").map(function (element) {
+        // removes the spaces and adds to knapsack
+        categoryKnapsack.push(element.trim());
     });
-    // submits form on enter key?
-    $(".user_input").keypress(function (e) {
-        if (e.keyCode === 13) {    // 13 is the enter key
-            $("#user_input_button").click();
-        }
-    });
+    // adds the new items/categories to an object
+    newItemObject.description = newItem;
+    newItemObject.categories = categoryKnapsack;
+    // adds the new items/categories to the todos array
+    todos.push(newItemObject);
+    refreshMainList();
+};
+
+// submits form on enter key
+var submitOnEnter = function (e) {
+    if (e.keyCode === 13) {    // 13 is the enter key
+        $(".user_input_button").click();
+    }
 };
 
 // runs all the functions
 var main = function () {
     "use strict";
-    createTabs();
+    $(".tabs > .tab").click(createTabs);
     // gets the JSON file.  critical.
     $.getJSON("all.json", function (json_todos) {
         todos = json_todos;
-        addAllToMainList();
-        recalculateForCategoryTab();
-        removeItem();
-        editTab();
+        refreshMainList();
+        populateCategoryNames();
+        categoryNames.sort();
+        $("#tab-categorized").click(refreshCategorizedList);
+        $(".icon-remove").click(removeItem);
+        $(".user_input_button").click(editTab);
+        $(".user_input").keypress(submitOnEnter);
     });
-
-    // $(user_input).split(",").map(function (element) {
-    //     return element.trim(); // <-- removes all the spaces!!
-    //     categories = $("input_box").split(",");
-    // });
 };
 
 $(document).ready(main);
