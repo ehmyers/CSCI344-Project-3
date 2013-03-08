@@ -1,20 +1,27 @@
+@background-color: #bdc3c7;
+@body-font: 'Sintony', sans-serif;
+@header-font: 'Ubuntu', sans-serif;
+@tab-color: #2980b9;
+@text-color: #222222;
+@text-size: 1.1em;
+
 /* general styles */
 body {
-  background: #bdc3c7;
-  font-family: 'Sintony', sans-serif;
-  font-size: 1.1em;
-  color: #222222;
+  background: @background-color;
+  font-family: @body-font;
+  font-size: @text-size;
+  color: @text-color;
   padding: 0px;
   margin: 0px;
 }
 
 a, a:hover{
   text-decoration: none;
-  color: #222222;
+  color: @text-color;
 }
 
 h2 {
-  font-family: 'Ubuntu', sans-serif;
+  font-family: @header-font;
   font-size: 1.5em;
   padding-top: 30px;
   margin: 0px;
@@ -25,10 +32,7 @@ p {
   margin: 0px;
 }
 
-#categories {
-  font-size: .75em;
-  padding-left: 15px;
-}
+/* content styles */
 
 .content {
   padding: 20px 10px;
@@ -44,20 +48,14 @@ p {
   display: block;
 }
 
-i {
-  padding: 0px 5px;
-  cursor: pointer;
-}
-
 /* user input styles */
-
 .input {
   padding: 20px 10px;
 }
 
 label {
-  font-family: 'Ubuntu', sans-serif;
-  font-size: 1.1em;
+  font-family: @header-font;
+  font-size: @text-size;
 }
 
 label, input {
@@ -69,18 +67,18 @@ label, input {
 }
 
 .user_input {
-  font-size: 1.1em;
+  font-size: @text-size;
 }
 
 /* tab styles */
 .tabs {
-  font-family: 'Ubuntu', sans-serif;
+  font-family: @header-font;
   margin-top: 70px;
   text-align: center;
 }
 
 .tabs .tab {
-  background: #2980b9;
+  background: @tab-color;
   color: #ecf0f1;
   padding: 15px 40px;
   margin: 2px;
@@ -88,8 +86,19 @@ label, input {
 
 .tabs .active {
   background: #3498db;
-  border: 2px solid #2980b9;
+  border: 2px solid @tab-color;
   border-bottom-width: 0;
+}
+
+/* miscellaneous styles */
+#categories {
+  font-size: .75em;
+  padding-left: 15px;
+}
+
+i {
+  padding: 0px 5px;
+  cursor: pointer;
 }
 
 /* makin' it jello! */
