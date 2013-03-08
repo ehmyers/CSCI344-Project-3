@@ -19,7 +19,7 @@ var createTabs = function () {
 
 // fills the categories with the items in them
 var fillCategory = function (category_name) {
-    "use strict"
+    "use strict";
     // adds a div with the id of the category name
     $("<div class='category' id='" + category_name + "'></div>").appendTo("#categorized");
     // adds a header to the category name div
@@ -31,8 +31,7 @@ var fillCategory = function (category_name) {
             // checks if the item's category matches the current category
             if (category === category_name) {
                 // adds the item to a paragraph
-                $("<p><i class='icon-remove'</i>" + todo.description + "</p>").appendTo("#" + category_name);
-                //console.log(todo.description);
+                $("<p><i class='icon-remove'></i>" + todo.description + "</p>").appendTo("#" + category_name);
             }
         });
     });
@@ -41,13 +40,10 @@ var fillCategory = function (category_name) {
 // adds each item/category to the all list
 var addAllToMainList = function () {
     "use strict";
-    var list_item,
-        itemIndex = 0;
-    todos.forEach(function (todo) {
+    var list_item;
+    todos.forEach(function (todo, itemIndex) {
         // adds a paragraph, adds the remove button to the paragraph
-        list_item = "<p id='title_and_category' href='" + itemIndex + "'><i class='icon-remove'></i>";
-        itemIndex += 1;
-        console.log(itemIndex);
+        list_item = "<p id='title_and_category' data-attribute='" + itemIndex + "'><i class='icon-remove'></i>";
         // adds each description to the string
         list_item += todo.description + "<span id='categories'>";
         // adds each category to the string
@@ -84,7 +80,7 @@ var populateCategoryNames = function (categoryNames) {
             // addUnseenCategoryToArray updates categoryNames array
             categoryNames = addUnseenCategoryToArray(categoryNames, category);
             // console.log(categoryNames);
-        })
+        });
     });
     return categoryNames;
 };
@@ -98,7 +94,6 @@ var recalculateForCategoryTab = function () {
     // on click, check the tab's href
     $(".tabs > .tab").click(function () {
         var target = $(this).attr("href");
-        //console.log("you clicked tab " + target);
         if (target === "categorized") {
             // empties the category so there isn't double-click overlap
             $(".content > #categorized").empty();
@@ -124,11 +119,25 @@ var removeItem = function () {
             currentItem.remove();
         });
         // gets the index of the current item
-        currentItemIndex = currentItem.attr("href");
-        console.log(currentItem);
+        currentItemIndex = currentItem.attr("data-attribute");
         // removes the current item
         todos.splice(currentItemIndex, 1);
-        // console.log(todos);
+    });
+};
+
+var editTab = function () {
+    "use strict";
+    var target,
+        newItem = $(".user_input").val();
+    // logs the user input on click/enter
+    $(".user_input_button").click(function () {
+        console.log(newItem);
+    });
+    // submits form on enter key?
+    $(".user_input").keypress(function (e) {
+        if (e.keyCode === 13) {    // 13 is the enter key
+            $("#user_input_button").click();
+        }
     });
 };
 
@@ -142,6 +151,7 @@ var main = function () {
         addAllToMainList();
         recalculateForCategoryTab();
         removeItem();
+        editTab();
     });
 
     // $(user_input).split(",").map(function (element) {
