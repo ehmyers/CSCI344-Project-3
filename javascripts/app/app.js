@@ -1,7 +1,7 @@
 /* globals: $ */
 var $ = window.$,
     jQuery = window.jQuery,
-    todos
+    todos,
     categoryNames = [];
 
 // adds usability to the tabs
@@ -16,13 +16,20 @@ var createTabs = function () {
     return false;
 };
 
+// adds a div with the id of the category name
+var addCategoryDiv = function (category_name) {
+    "use strict";
+    var header;
+    // adds a header to the category name div
+    header = "<h2>" + category_name + "</h2>";
+    // appends all to div
+    $("<div class='category' id='" + category_name + "'>" + header + "</div>").appendTo("#categorized");
+};
+
 // fills the categories with the items in them
 var fillCategory = function (category_name) {
     "use strict";
-    // adds a div with the id of the category name
-    $("<div class='category' id='" + category_name + "'></div>").appendTo("#categorized");
-    // adds a header to the category name div
-    $("<h2>" + category_name + "</h2>").appendTo("#" + category_name);
+    addCategoryDiv(category_name);
     // checks if the item being looked at has the category currently being
     // added to, if it does, it appends it to the paragraph
     todos.forEach(function (todo) {
@@ -31,6 +38,11 @@ var fillCategory = function (category_name) {
             if (category === category_name) {
                 // adds the item to a paragraph
                 $("<p><i class='icon-remove'></i>" + todo.description + "</p>").appendTo("#" + category_name);
+            }
+            if (categoryNames.indexOf(category) === -1) {
+                addCategoryDiv(category_name);
+                console.log(categoryNames);
+                console.log(categoryNames.indexOf(category));
             }
         });
     });
@@ -88,7 +100,8 @@ var populateCategoryNames = function () {
 
 // refreshes categorized tab
 var refreshCategorizedList = function () {
-    console.log("Emptying categorized list");
+    "use strict";
+    //console.log("Emptying categorized list");
     $("#categorized").empty();
     // add all the items for each item in the array
     categoryNames.forEach(function (category) {
@@ -140,6 +153,7 @@ var editTab = function () {
 
 // submits form on enter key
 var submitOnEnter = function (e) {
+    "use strict";
     if (e.keyCode === 13) {    // 13 is the enter key
         $(".user_input_button").click();
     }
