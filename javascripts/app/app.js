@@ -109,10 +109,11 @@ var refreshCategorizedList = function () {
         fillCategory(category);
     });
     // checks to see if category is empty, removes if so
-    if ($("div:has(p)") === false) {
-        console.log($(div));
-        //.remove();
-    }
+    $("div").each(function() {
+        if ($(this).find("p").length < 0) {
+            console.log($(this));
+        }
+    });
 };
 
 // removes item when user clicks remove button
