@@ -2,6 +2,7 @@
 var $ = window.$,
     jQuery = window.jQuery,
     todos,
+    highestId = 0,
     categoryNames = [];
 
 // adds usability to the tabs
@@ -16,6 +17,15 @@ var createTabs = function () {
     return false;
 };
 
+// adds a new id to each item at beginning
+var initializeTodos = function () {
+    "use strict";
+    todos.forEach(function (todo) {
+        todo.id = highestId;
+        highestId += 1;
+    });
+};
+
 // adds a div with the id of the category name
 var addCategoryDiv = function (category_name) {
     "use strict";
@@ -27,7 +37,7 @@ var addCategoryDiv = function (category_name) {
 };
 
 // fills the categories with the items in them
-var fillCategory = function (category_name) {
+var fillCategory = function (category_name, itemIndex) {
     "use strict";
     addCategoryDiv(category_name);
     // checks if the item being looked at has the category currently being
@@ -37,7 +47,7 @@ var fillCategory = function (category_name) {
             // checks if the item's category matches the current category
             if (category === category_name) {
                 // adds the item to a paragraph
-                $("<p data-attribute='" + itemIndex + "'><i class='icon-remove'></i>" + todo.description + "</p>").appendTo("#" + category_name);
+                $("<p data-id='" + todo.id + "'><i class='icon-remove'></i>" + todo.description + "</p>").appendTo("#" + category_name);
             }
             if (categoryNames.indexOf(category) === -1) {
                 addUnseenCategoryToArray(category);
@@ -53,9 +63,9 @@ var refreshMainList = function () {
     var list_item;
     // empties the category so there isn't double-click overlap
     $("#all-items").empty();
-    todos.forEach(function (todo, itemIndex) {
+    todos.forEach(function (todo) {
         // adds a paragraph, adds the remove button to the paragraph
-        list_item = "<p id='title_and_category' data-attribute='" + itemIndex + "'><i class='icon-remove'></i>";
+        list_item = "<p id='title_and_category' data-id='" + todo.id + "'><i class='icon-remove'></i>";
         // adds each description to the string
         list_item += todo.description + "<span id='categories'>";
         // adds each category to the string
@@ -91,7 +101,6 @@ var populateCategoryNames = function () {
         todo.categories.forEach(function (category) {
             // addUnseenCategoryToArray updates categoryNames array
             categoryNames = addUnseenCategoryToArray(category);
-            // console.log(categoryNames);
         });
     });
     categoryNames.sort();
@@ -108,10 +117,24 @@ var refreshCategorizedList = function () {
     categoryNames.forEach(function (category) {
         fillCategory(category);
     });
+};
+
+var removeEmptyCategories = function () {
+    "use strict";
     // checks to see if category is empty, removes if so
-    $("div").each(function() {
-        if ($(this).find("p").length < 0) {
-            console.log($(this));
+    todos.forEach(function (todo) {
+        todo.categories.forEach(function (category) {
+
+        });
+    });
+};
+
+// gets the index of an item based on id
+var idToIndex = function (id) {
+    "use strict";
+    todos.forEach(function (item, index) {
+        if (id === item.id) {
+            return index;
         }
     });
 };
@@ -120,17 +143,19 @@ var refreshCategorizedList = function () {
 var removeItem = function () {
     "use strict";
     var currentItem,
+        currentItemId,
         currentItemIndex;
     // gets the parent
     currentItem = $(this).parent();
     // removes the parent
-    currentItem.fadeOut(400, function () {
-        currentItem.remove();
-    });
+    currentItem.fadeOut();
     // gets the index of the current item
-    currentItemIndex = currentItem.attr("data-attribute");
+    currentItemId = currentItem.attr("data-id");
+    currentItemIndex = idToIndex(currentItemId);
     // removes the current item
     todos.splice(currentItemIndex, 1);
+    //removeEmptyCategories();
+    console.log(todos);
 };
 
 var editTab = function () {
@@ -154,6 +179,9 @@ var editTab = function () {
     // adds the new items/categories to an object
     newItemObject.description = newItem;
     newItemObject.categories = categoryKnapsack;
+    // adds an id to the object, increments
+    newItemObject.id = highestId + 1;
+    highestId += 1;    
     // adds the new items/categories to the todos array
     todos.push(newItemObject);
     refreshMainList();
@@ -174,6 +202,7 @@ var main = function () {
     // gets the JSON file.  critical.
     $.getJSON("all.json", function (json_todos) {
         todos = json_todos;
+        initializeTodos();
         refreshMainList();
         $(".icon-remove").click(removeItem);
         $("#tab-categorized").click(refreshCategorizedList);
