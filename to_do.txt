@@ -1,3 +1,18 @@
 make remove work on all tabs when clicked on one
+	(need to add the data-attribute to the todos array,
+	must be connected to each individual item CORRECTLY)
 
-style more?  idk.
+make remove work when new items have been added
+
+if category is empty, remove header
+	(do this by checking to see if there are no <p> within <div>)
+
+style more?
+
+
+
+ideas:
+
+// adds the data-attribute to the todos object
+todos.itemIndex = itemIndex;
+console.log(todos);

@@ -32,12 +32,12 @@ var fillCategory = function (category_name) {
     addCategoryDiv(category_name);
     // checks if the item being looked at has the category currently being
     // added to, if it does, it appends it to the paragraph
-    todos.forEach(function (todo) {
+    todos.forEach(function (todo, itemIndex) {
         todo.categories.forEach(function (category) {
             // checks if the item's category matches the current category
             if (category === category_name) {
                 // adds the item to a paragraph
-                $("<p><i class='icon-remove'></i>" + todo.description + "</p>").appendTo("#" + category_name);
+                $("<p data-attribute='" + itemIndex + "'><i class='icon-remove'></i>" + todo.description + "</p>").appendTo("#" + category_name);
             }
             if (categoryNames.indexOf(category) === -1) {
                 addUnseenCategoryToArray(category);
@@ -108,6 +108,11 @@ var refreshCategorizedList = function () {
     categoryNames.forEach(function (category) {
         fillCategory(category);
     });
+    // checks to see if category is empty, removes if so
+    if ($("div:has(p)") === false) {
+        console.log($(div));
+        //.remove();
+    }
 };
 
 // removes item when user clicks remove button
@@ -169,8 +174,8 @@ var main = function () {
     $.getJSON("all.json", function (json_todos) {
         todos = json_todos;
         refreshMainList();
-        $("#tab-categorized").click(refreshCategorizedList);
         $(".icon-remove").click(removeItem);
+        $("#tab-categorized").click(refreshCategorizedList);
         $(".user_input_button").click(editTab);
         $(".user_input").keypress(submitOnEnter);
     });
