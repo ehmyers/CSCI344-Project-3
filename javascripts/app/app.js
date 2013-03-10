@@ -40,9 +40,8 @@ var fillCategory = function (category_name) {
                 $("<p><i class='icon-remove'></i>" + todo.description + "</p>").appendTo("#" + category_name);
             }
             if (categoryNames.indexOf(category) === -1) {
-                addCategoryDiv(category_name);
+                addUnseenCategoryToArray(category);
                 console.log(categoryNames);
-                console.log(categoryNames.indexOf(category));
             }
         });
     });
@@ -95,6 +94,7 @@ var populateCategoryNames = function () {
             // console.log(categoryNames);
         });
     });
+    categoryNames.sort();
     return categoryNames;
 };
 
@@ -103,6 +103,7 @@ var refreshCategorizedList = function () {
     "use strict";
     //console.log("Emptying categorized list");
     $("#categorized").empty();
+    populateCategoryNames();
     // add all the items for each item in the array
     categoryNames.forEach(function (category) {
         fillCategory(category);
@@ -142,6 +143,7 @@ var editTab = function () {
     newItemCategories.split(",").map(function (element) {
         // removes the spaces and adds to knapsack
         categoryKnapsack.push(element.trim());
+        console.log(categoryKnapsack);
     });
     // adds the new items/categories to an object
     newItemObject.description = newItem;
@@ -167,8 +169,6 @@ var main = function () {
     $.getJSON("all.json", function (json_todos) {
         todos = json_todos;
         refreshMainList();
-        populateCategoryNames();
-        categoryNames.sort();
         $("#tab-categorized").click(refreshCategorizedList);
         $(".icon-remove").click(removeItem);
         $(".user_input_button").click(editTab);
