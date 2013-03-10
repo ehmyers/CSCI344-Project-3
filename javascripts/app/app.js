@@ -147,15 +147,14 @@ var removeItem = function () {
         currentItemIndex;
     // gets the parent
     currentItem = $(this).parent();
-    // removes the parent
-    currentItem.fadeOut();
     // gets the index of the current item
     currentItemId = currentItem.attr("data-id");
     currentItemIndex = idToIndex(currentItemId);
+    // removes the parent
+    currentItem.fadeOut();
     // removes the current item
     todos.splice(currentItemIndex, 1);
     //removeEmptyCategories();
-    console.log(todos);
 };
 
 var editTab = function () {

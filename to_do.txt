@@ -1,6 +1,8 @@
 make remove work on all tabs when clicked on one
 
-make remove work when new items have been added
+make remove buttons work on categorized
+
+make remove button actually delete (from stage and array) what was meant to be 		deleted
 
 if category is empty, remove header
 	(do this by checking to see if there are no <p> within <div>)
