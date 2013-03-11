@@ -122,10 +122,11 @@ var refreshCategorizedList = function () {
 var removeEmptyCategories = function () {
     "use strict";
     // checks to see if category is empty, removes if so
-    todos.forEach(function (todo) {
-        todo.categories.forEach(function (category) {
-
-        });
+    $(".category").forEach(function (item) {
+        if (item.find("<p>") === null) {
+            console.log(item);
+            item.parent().remove();
+        }
     });
 };
 
@@ -137,11 +138,11 @@ var idToIndex = function (id) {
         //console.log("the item.id is " + item.id);
         //console.log("the id is " + id);
         if (id == item.id) {
-            console.log("the matched item is " + index);
+            //console.log("the matched item is " + index);
             newIndex = index;
         }
     });
-    console.log(newIndex);
+    //console.log(newIndex);
     return newIndex;
 };
 
@@ -159,7 +160,6 @@ var removeItem = function () {
     // removes the parent
     currentItem.fadeOut();
     // removes the current item
-    //console.log(currentItemIndex);
     todos.splice(currentItemIndex, 1);
     //removeEmptyCategories();
 };
