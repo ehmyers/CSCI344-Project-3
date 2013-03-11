@@ -132,11 +132,17 @@ var removeEmptyCategories = function () {
 // gets the index of an item based on id
 var idToIndex = function (id) {
     "use strict";
+    var newIndex;
     todos.forEach(function (item, index) {
-        if (id === item.id) {
-            return index;
+        //console.log("the item.id is " + item.id);
+        //console.log("the id is " + id);
+        if (id == item.id) {
+            console.log("the matched item is " + index);
+            newIndex = index;
         }
     });
+    console.log(newIndex);
+    return newIndex;
 };
 
 // removes item when user clicks remove button
@@ -153,6 +159,7 @@ var removeItem = function () {
     // removes the parent
     currentItem.fadeOut();
     // removes the current item
+    //console.log(currentItemIndex);
     todos.splice(currentItemIndex, 1);
     //removeEmptyCategories();
 };
