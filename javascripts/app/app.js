@@ -36,6 +36,31 @@ var addCategoryDiv = function (category_name) {
     $("<div class='category' id='" + category_name + "'>" + header + "</div>").appendTo("#categorized");
 };
 
+// determines if the category has been used before
+var addUnseenCategoryToArray = function (category) {
+    // check to see if the current category is in the array
+    // -1 means it is not in the array, and it adds to the array
+    // console.log(category);
+    "use strict";
+    if (categoryNames.indexOf(category) === -1) {
+        categoryNames.push(category);
+    }
+    return categoryNames;
+};
+
+var populateCategoryNames = function () {
+    "use strict";
+    // drills down to get each category
+    todos.forEach(function (todo) {
+        todo.categories.forEach(function (category) {
+            // addUnseenCategoryToArray updates categoryNames array
+            categoryNames = addUnseenCategoryToArray(category);
+        });
+    });
+    categoryNames.sort();
+    return categoryNames;
+};
+
 // fills the categories with the items in them
 var fillCategory = function (category_name, itemIndex) {
     "use strict";
@@ -82,31 +107,6 @@ var refreshMainList = function () {
     });
 };
 
-// determines if the category has been used before
-var addUnseenCategoryToArray = function (category) {
-    // check to see if the current category is in the array
-    // -1 means it is not in the array, and it adds to the array
-    // console.log(category);
-    "use strict";
-    if (categoryNames.indexOf(category) === -1) {
-        categoryNames.push(category);
-    }
-    return categoryNames;
-};
-
-var populateCategoryNames = function () {
-    "use strict";
-    // drills down to get each category
-    todos.forEach(function (todo) {
-        todo.categories.forEach(function (category) {
-            // addUnseenCategoryToArray updates categoryNames array
-            categoryNames = addUnseenCategoryToArray(category);
-        });
-    });
-    categoryNames.sort();
-    return categoryNames;
-};
-
 // refreshes categorized tab
 var refreshCategorizedList = function () {
     "use strict";
@@ -123,6 +123,7 @@ var removeEmptyCategories = function () {
     "use strict";
     // checks to see if category is empty, removes if so
     $(".category").forEach(function (item) {
+        console.log(item.parent());
         if (item.find("<p>") === null) {
             console.log(item);
             item.parent().remove();
@@ -137,7 +138,7 @@ var idToIndex = function (id) {
     todos.forEach(function (item, index) {
         //console.log("the item.id is " + item.id);
         //console.log("the id is " + id);
-        if (id == item.id) {
+        if (Number(id) === Number(item.id)) {
             //console.log("the matched item is " + index);
             newIndex = index;
         }
@@ -187,7 +188,7 @@ var editTab = function () {
     newItemObject.categories = categoryKnapsack;
     // adds an id to the object, increments
     newItemObject.id = highestId + 1;
-    highestId += 1;    
+    highestId += 1;
     // adds the new items/categories to the todos array
     todos.push(newItemObject);
     refreshMainList();
