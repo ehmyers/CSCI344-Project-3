@@ -62,12 +62,12 @@ var populateCategoryNames = function () {
 };
 
 // fills the categories with the items in them
-var fillCategory = function (category_name, itemIndex) {
+var fillCategory = function (category_name) {
     "use strict";
     addCategoryDiv(category_name);
     // checks if the item being looked at has the category currently being
     // added to, if it does, it appends it to the paragraph
-    todos.forEach(function (todo, itemIndex) {
+    todos.forEach(function (todo) {
         todo.categories.forEach(function (category) {
             // checks if the item's category matches the current category
             if (category === category_name) {
