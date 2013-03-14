@@ -161,10 +161,11 @@ var removeItem = function () {
     currentItemId = currentItem.attr("data-id");
     currentItemIndex = idToIndex(currentItemId);
     // removes the parent
-    currentItem.fadeOut();
+    $("[data-id='" + currentItemId + "']").fadeOut();
+    //currentItem.fadeOut();
     // removes the current item
     todos.splice(currentItemIndex, 1);
-    refreshCategorizedList();
+    //refreshCategorizedList();
     //removeEmptyCategories();
 };
 
