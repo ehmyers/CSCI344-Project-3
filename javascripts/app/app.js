@@ -87,7 +87,8 @@ var refreshMainList = function () {
     "use strict";
     var list_item;
     // empties the category so there isn't double-click overlap
-    $("#all-items").empty();
+    $("#all_items").empty();
+    console.log(todos);
     todos.forEach(function (todo) {
         // adds a paragraph, adds the remove button to the paragraph
         list_item = "<p id='title_and_category' data-id='" + todo.id + "'><i class='icon-remove'></i>";
@@ -110,13 +111,14 @@ var refreshMainList = function () {
 // refreshes categorized tab
 var refreshCategorizedList = function () {
     "use strict";
-    //console.log("Emptying categorized list");
     $("#categorized").empty();
     populateCategoryNames();
     // add all the items for each item in the array
     categoryNames.forEach(function (category) {
         fillCategory(category);
     });
+    // binds the icon-remove's to the removeItem function
+    $(".icon-remove").click(removeItem);
 };
 
 var removeEmptyCategories = function () {
@@ -162,6 +164,7 @@ var removeItem = function () {
     currentItem.fadeOut();
     // removes the current item
     todos.splice(currentItemIndex, 1);
+    refreshCategorizedList();
     //removeEmptyCategories();
 };
 
@@ -181,7 +184,7 @@ var editTab = function () {
     newItemCategories.split(",").map(function (element) {
         // removes the spaces and adds to knapsack
         categoryKnapsack.push(element.trim());
-        console.log(categoryKnapsack);
+        //console.log(categoryKnapsack);
     });
     // adds the new items/categories to an object
     newItemObject.description = newItem;
@@ -213,6 +216,7 @@ var main = function () {
         refreshMainList();
         $(".icon-remove").click(removeItem);
         $("#tab_categorized").click(refreshCategorizedList);
+        $("#tab_all").click(refreshMainList);
         $(".user_input_button").click(editTab);
         $(".user_input").keypress(submitOnEnter);
     });

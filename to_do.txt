@@ -1,6 +1,5 @@
-make remove buttons work on categorized
-
 if category is empty, remove header
 	(do this by checking to see if there are no <p> within <div>)
 
-style more?
+style more
+	(fade things out when categorized tab refreshes?)
