@@ -132,10 +132,10 @@ var removeEmptyCategories = function () {
     // checks to see if category is empty, removes if so
     $(".category").each(function (index, item) {
         item = $(this);
-        //console.log(item.parent());
         if (item.find("p").length === 0) {
             item.fadeOut(400, function () {
                 item.remove();
+                // categoryNames.splice(item, 1);
             });
         }
     });
@@ -172,6 +172,10 @@ var refreshCategorizedList = function () {
     });
     // binds the icon-remove's to the removeItem function
     $(".icon-remove").click(removeItem);
+    console.log(categoryNames.length);
+    if (categoryNames.length === 0) {
+        removeEmptyCategories();
+    }
 };
 
 var editTab = function () {
