@@ -1,5 +1,4 @@
 if category is empty, remove header
 	(do this by checking to see if there are no <p> within <div>)
 
-style more
-	(fade things out when categorized tab refreshes?)
+test like crazy.

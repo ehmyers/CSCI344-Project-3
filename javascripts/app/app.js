@@ -88,7 +88,6 @@ var refreshMainList = function () {
     var list_item;
     // empties the category so there isn't double-click overlap
     $("#all_items").empty();
-    console.log(todos);
     todos.forEach(function (todo) {
         // adds a paragraph, adds the remove button to the paragraph
         list_item = "<p id='title_and_category' data-id='" + todo.id + "'><i class='icon-remove'></i>";
@@ -108,31 +107,6 @@ var refreshMainList = function () {
     });
 };
 
-// refreshes categorized tab
-var refreshCategorizedList = function () {
-    "use strict";
-    $("#categorized").empty();
-    populateCategoryNames();
-    // add all the items for each item in the array
-    categoryNames.forEach(function (category) {
-        fillCategory(category);
-    });
-    // binds the icon-remove's to the removeItem function
-    $(".icon-remove").click(removeItem);
-};
-
-var removeEmptyCategories = function () {
-    "use strict";
-    // checks to see if category is empty, removes if so
-    $(".category").forEach(function (item) {
-        console.log(item.parent());
-        if (item.find("<p>") === null) {
-            console.log(item);
-            item.parent().remove();
-        }
-    });
-};
-
 // gets the index of an item based on id
 var idToIndex = function (id) {
     "use strict";
@@ -149,6 +123,21 @@ var idToIndex = function (id) {
     return newIndex;
 };
 
+// removes empty header categories from the categories tab
+var removeEmptyCategories = function () {
+    "use strict";
+    var item;
+    // checks to see if category is empty, removes if so
+    $(".category").each(function (index, item) {
+        item = $(this);
+        //console.log(item.parent());
+        if (item.find("p").length === 0) {
+            console.log("nothing found!");
+            item.remove();
+        }
+    });
+};
+
 // removes item when user clicks remove button
 var removeItem = function () {
     "use strict";
@@ -161,12 +150,25 @@ var removeItem = function () {
     currentItemId = currentItem.attr("data-id");
     currentItemIndex = idToIndex(currentItemId);
     // removes the parent
-    $("[data-id='" + currentItemId + "']").fadeOut();
-    //currentItem.fadeOut();
+    $("[data-id='" + currentItemId + "']").fadeOut(400, function () {
+        $(this).remove();
+    });
     // removes the current item
     todos.splice(currentItemIndex, 1);
-    //refreshCategorizedList();
-    //removeEmptyCategories();
+    removeEmptyCategories();
+};
+
+// refreshes categorized tab
+var refreshCategorizedList = function () {
+    "use strict";
+    $("#categorized").empty();
+    populateCategoryNames();
+    // add all the items for each item in the array
+    categoryNames.forEach(function (category) {
+        fillCategory(category);
+    });
+    // binds the icon-remove's to the removeItem function
+    $(".icon-remove").click(removeItem);
 };
 
 var editTab = function () {
