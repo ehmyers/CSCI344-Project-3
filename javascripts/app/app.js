@@ -104,6 +104,8 @@ var refreshMainList = function () {
         list_item += "</span></p>";
         // finally adds string to the div
         $(list_item).appendTo("#all_items");
+        // binds the icon-remove's to the removeItem function
+        $(".icon-remove").click(removeItem);
     });
 };
 
@@ -132,8 +134,9 @@ var removeEmptyCategories = function () {
         item = $(this);
         //console.log(item.parent());
         if (item.find("p").length === 0) {
-            console.log("nothing found!");
-            item.remove();
+            item.fadeOut(400, function () {
+                item.remove();
+            });
         }
     });
 };
@@ -152,10 +155,10 @@ var removeItem = function () {
     // removes the parent
     $("[data-id='" + currentItemId + "']").fadeOut(400, function () {
         $(this).remove();
+        // removes the current item
+        todos.splice(currentItemIndex, 1);
+        removeEmptyCategories();
     });
-    // removes the current item
-    todos.splice(currentItemIndex, 1);
-    removeEmptyCategories();
 };
 
 // refreshes categorized tab
@@ -217,7 +220,6 @@ var main = function () {
         todos = json_todos;
         initializeTodos();
         refreshMainList();
-        $(".icon-remove").click(removeItem);
         $("#tab_categorized").click(refreshCategorizedList);
         $("#tab_all").click(refreshMainList);
         $(".user_input_button").click(editTab);
