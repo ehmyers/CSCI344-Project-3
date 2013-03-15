@@ -82,6 +82,64 @@ var fillCategory = function (category_name) {
     });
 };
 
+// removes empty header categories from the categories tab
+var removeEmptyCategories = function () {
+    "use strict";
+    var item,
+        divTitle,
+        headerTitle;
+    // checks to see if category is empty, removes if so
+    $(".category").each(function (index, item) {
+        item = $(this);
+        if (item.find("p").length === 0) {
+            divTitle = item.parent();
+            headerTitle = divTitle.children("h2");
+            //console.log(headerTitle);
+            item.fadeOut(400, function () {
+                item.remove();
+            });
+        }
+        // removes the header from the categoryNames array
+        categoryNames.splice(headerTitle, 1);
+    });
+};
+
+// gets the index of an item based on id
+var idToIndex = function (id) {
+    "use strict";
+    var newIndex;
+    todos.forEach(function (item, index) {
+        //console.log("the item.id is " + item.id);
+        //console.log("the id is " + id);
+        if (Number(id) === Number(item.id)) {
+            //console.log("the matched item is " + index);
+            newIndex = index;
+        }
+    });
+    //console.log(newIndex);
+    return newIndex;
+};
+
+// removes item when user clicks remove button
+var removeItem = function () {
+    "use strict";
+    var currentItem,
+        currentItemId,
+        currentItemIndex;
+    // gets the parent
+    currentItem = $(this).parent();
+    // gets the index of the current item
+    currentItemId = currentItem.attr("data-id");
+    currentItemIndex = idToIndex(currentItemId);
+    // removes the parent
+    $("[data-id='" + currentItemId + "']").fadeOut(400, function () {
+        $(this).remove();
+        removeEmptyCategories();
+    });
+    // removes the current item
+    todos.splice(currentItemIndex, 1);
+};
+
 // adds each item/category to the all list
 var refreshMainList = function () {
     "use strict";
@@ -109,65 +167,6 @@ var refreshMainList = function () {
     $(".icon-remove").click(removeItem);
 };
 
-// gets the index of an item based on id
-var idToIndex = function (id) {
-    "use strict";
-    var newIndex;
-    todos.forEach(function (item, index) {
-        //console.log("the item.id is " + item.id);
-        //console.log("the id is " + id);
-        if (Number(id) === Number(item.id)) {
-            //console.log("the matched item is " + index);
-            newIndex = index;
-        }
-    });
-    //console.log(newIndex);
-    return newIndex;
-};
-
-// removes empty header categories from the categories tab
-var removeEmptyCategories = function () {
-    "use strict";
-    var item,
-        divTitle,
-        headerTitle;
-    // checks to see if category is empty, removes if so
-    $(".category").each(function (index, item) {
-        item = $(this);
-        if (item.find("p").length === 0) {
-            divTitle = item.parent();
-            headerTitle = divTitle.children("h2");
-            console.log(divTitle);
-            item.fadeOut(400, function () {
-                item.remove();
-            });
-        }
-        // removes the header from the categoryNames array
-        categoryNames.splice(headerTitle, 1);
-        console.log(categoryNames);
-    });
-};
-
-// removes item when user clicks remove button
-var removeItem = function () {
-    "use strict";
-    var currentItem,
-        currentItemId,
-        currentItemIndex;
-    // gets the parent
-    currentItem = $(this).parent();
-    // gets the index of the current item
-    currentItemId = currentItem.attr("data-id");
-    currentItemIndex = idToIndex(currentItemId);
-    // removes the parent
-    $("[data-id='" + currentItemId + "']").fadeOut(400, function () {
-        $(this).remove();
-        removeEmptyCategories();
-    });
-    // removes the current item
-    todos.splice(currentItemIndex, 1);
-};
-
 // refreshes categorized tab
 var refreshCategorizedList = function () {
     "use strict";
@@ -179,7 +178,6 @@ var refreshCategorizedList = function () {
     });
     // binds the icon-remove's to the removeItem function
     $(".icon-remove").click(removeItem);
-    console.log(categoryNames.length);
     if (categoryNames.length === 0) {
         removeEmptyCategories();
     }
