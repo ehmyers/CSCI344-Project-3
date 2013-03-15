@@ -104,9 +104,9 @@ var refreshMainList = function () {
         list_item += "</span></p>";
         // finally adds string to the div
         $(list_item).appendTo("#all_items");
-        // binds the icon-remove's to the removeItem function
-        $(".icon-remove").click(removeItem);
     });
+    // binds the icon-remove's to the removeItem function
+    $(".icon-remove").click(removeItem);
 };
 
 // gets the index of an item based on id
@@ -128,16 +128,23 @@ var idToIndex = function (id) {
 // removes empty header categories from the categories tab
 var removeEmptyCategories = function () {
     "use strict";
-    var item;
+    var item,
+        divTitle,
+        headerTitle;
     // checks to see if category is empty, removes if so
     $(".category").each(function (index, item) {
         item = $(this);
         if (item.find("p").length === 0) {
+            divTitle = item.parent();
+            headerTitle = divTitle.children("h2");
+            console.log(divTitle);
             item.fadeOut(400, function () {
                 item.remove();
-                // categoryNames.splice(item, 1);
             });
         }
+        // removes the header from the categoryNames array
+        categoryNames.splice(headerTitle, 1);
+        console.log(categoryNames);
     });
 };
 
@@ -155,10 +162,10 @@ var removeItem = function () {
     // removes the parent
     $("[data-id='" + currentItemId + "']").fadeOut(400, function () {
         $(this).remove();
-        // removes the current item
-        todos.splice(currentItemIndex, 1);
         removeEmptyCategories();
     });
+    // removes the current item
+    todos.splice(currentItemIndex, 1);
 };
 
 // refreshes categorized tab
