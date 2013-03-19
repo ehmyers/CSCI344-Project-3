@@ -1,41 +1,32 @@
+/*global window */
+/*global document */
+
 (function () {
     "use strict";
     var $ = window.$,
-        jQuery = window.jQuery,
         todos,
         highestId = 0,
         categoryNames = [];
 
-    // adds usability to the tabs
-    var createTabs = function () {
-        var target = $(this).attr("href");
-        // add/removes active class from tab
-        $(".active").removeClass("active");
-        $(this).addClass("active");
-        $("#" + target).addClass("active");
-        //
-        return false;
-    };
-
     // adds a new id to each item at beginning
-    var initializeTodos = function () {
+    function initializeTodos() {
         todos.forEach(function (todo) {
             todo.id = highestId;
             highestId += 1;
         });
-    };
+    }
 
     // adds a div with the id of the category name
-    var addCategoryDiv = function (category_name) {
+    function addCategoryDiv(category_name) {
         var header;
         // adds a header to the category name div
         header = "<h2>" + category_name + "</h2>";
         // appends all to div
         $("<div class='category' id='" + category_name + "'>" + header + "</div>").appendTo("#categorized");
-    };
+    }
 
     // determines if the category has been used before
-    var addUnseenCategoryToArray = function (category) {
+    function addUnseenCategoryToArray(category) {
         // check to see if the current category is in the array
         // -1 means it is not in the array, and it adds to the array
         // console.log(category);
@@ -43,9 +34,9 @@
             categoryNames.push(category);
         }
         return categoryNames;
-    };
+    }
 
-    var populateCategoryNames = function () {
+    function populateCategoryNames() {
         // drills down to get each category
         todos.forEach(function (todo) {
             todo.categories.forEach(function (category) {
@@ -55,10 +46,10 @@
         });
         categoryNames.sort();
         return categoryNames;
-    };
+    }
 
     // fills the categories with the items in them
-    var fillCategory = function (category_name) {
+    function fillCategory(category_name) {
         addCategoryDiv(category_name);
         // checks if the item being looked at has the category currently being
         // added to, if it does, it appends it to the paragraph
@@ -75,15 +66,15 @@
                 }
             });
         });
-    };
+    }
 
     // removes empty header categories from the categories tab
-    var removeEmptyCategories = function () {
+    function removeEmptyCategories() {
         var item,
             divTitle,
             headerTitle;
         // checks to see if category is empty, removes if so
-        $(".category").each(function (index, item) {
+        $(".category").each(function () {
             item = $(this);
             if (item.find("p").length === 0) {
                 divTitle = item.parent();
@@ -96,10 +87,10 @@
             // removes the header from the categoryNames array
             categoryNames.splice(headerTitle, 1);
         });
-    };
+    }
 
     // gets the index of an item based on id
-    var idToIndex = function (id) {
+    function idToIndex(id) {
         var newIndex;
         todos.forEach(function (item, index) {
             //console.log("the item.id is " + item.id);
@@ -111,15 +102,15 @@
         });
         //console.log(newIndex);
         return newIndex;
-    };
+    }
 
     // removes item when user clicks remove button
-    var removeItem = function () {
+    function removeItem(clickedItem) {
         var currentItem,
             currentItemId,
             currentItemIndex;
         // gets the parent
-        currentItem = $(this).parent();
+        currentItem = $(clickedItem).parent(); ///
         // gets the index of the current item
         currentItemId = currentItem.attr("data-id");
         currentItemIndex = idToIndex(currentItemId);
@@ -130,10 +121,10 @@
         });
         // removes the current item
         todos.splice(currentItemIndex, 1);
-    };
+    }
 
     // adds each item/category to the all list
-    var refreshMainList = function () {
+    function refreshMainList() {
         var list_item;
         // empties the category so there isn't double-click overlap
         $("#all_items").empty();
@@ -155,11 +146,13 @@
             $(list_item).appendTo("#all_items");
         });
         // binds the icon-remove's to the removeItem function
-        $(".icon-remove").click(removeItem);
-    };
+        $(".icon-remove").click(function () {
+            removeItem(this);
+        });
+    }
 
     // refreshes categorized tab
-    var refreshCategorizedList = function () {
+    function refreshCategorizedList() {
         $("#categorized").empty();
         populateCategoryNames();
         // add all the items for each item in the array
@@ -167,13 +160,15 @@
             fillCategory(category);
         });
         // binds the icon-remove's to the removeItem function
-        $(".icon-remove").click(removeItem);
+        $(".icon-remove").click(function () {
+            removeItem(this);
+        });
         if (categoryNames.length === 0) {
             removeEmptyCategories();
         }
-    };
+    }
 
-    var editTab = function () {
+    function editTab() {
         var newItem,
             newItemCategories,
             newItemObject = {},
@@ -199,18 +194,26 @@
         // adds the new items/categories to the todos array
         todos.push(newItemObject);
         refreshMainList();
-    };
+    }
 
     // submits form on enter key
-    var submitOnEnter = function (e) {
+    function submitOnEnter(e) {
         if (e.keyCode === 13) {    // 13 is the enter key
             $(".user_input_button").click();
         }
-    };
+    }
 
     // runs all the functions
-    var main = function () {
-        $(".tabs > .tab").click(createTabs);
+    function main() {
+        $(".tabs > .tab").click(function () {
+            var target = $(this).attr("href");
+            // add/removes active class from tab
+            $(".active").removeClass("active");
+            $(this).addClass("active");
+            $("#" + target).addClass("active");
+            //
+            return false;
+        });
         // gets the JSON file.  critical.
         $.getJSON("all.json", function (json_todos) {
             todos = json_todos;
@@ -221,7 +224,7 @@
             $(".user_input_button").click(editTab);
             $(".user_input").keypress(submitOnEnter);
         });
-    };
+    }
 
     $(document).ready(main);
 
